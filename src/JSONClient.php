@@ -9,12 +9,20 @@ class JSONClient
 
     protected $client;
 
-    public static function __construct($base_url = null, $headers = [])
-    {
-        $base = $base_url ?? '';
-        $instance = self::$instance = new self($base, new Client());
-        $instance->base_url = $base;
+    protected $timeout = 2.0;
 
-        return $instance;
+    public function __construct($base_url = '', $headers = [])
+    {
+        $opts = [];
+        $opts['timeout'] = $this->timeout;
+        $opts['headers'] = [
+            'User-Agent' => \GuzzleHttp\default_user_agent() . ' json-client/0.1',
+        ];
+
+        if (!empty($base_url)) {
+            $opts['base_uri'] = $base_url;
+        }
+
+        $this->client = new Client($opts);
     }
 }

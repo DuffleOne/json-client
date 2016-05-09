@@ -4,6 +4,6 @@ use Duffleman\JSONClient\JSONClient;
 
 require('vendor/autoload.php');
 
-$client = JSONClient::build();
+$client = new JSONClient();
 
 dump($client);

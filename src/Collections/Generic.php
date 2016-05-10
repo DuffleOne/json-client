@@ -123,4 +123,8 @@ class Generic implements Countable, ArrayAccess
 	{
 		unset($this->attributes[$offset]);
 	}
+
+	public function __toString() {
+		return encode($this->attributes);
+	}
 }

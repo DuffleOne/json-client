@@ -17,7 +17,6 @@
 			"helpers.php"
 		]
 	},
-	"minimum-stability": "dev",
 	"require": {
 		"php": ">=7.0",
 		"guzzlehttp/guzzle": "^6.2",

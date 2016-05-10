@@ -8,17 +8,44 @@ use Duffleman\JSONClient\Exceptions\JSONLibraryException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 
+/**
+ * Class JSONClient
+ *
+ * @package Duffleman\JSONClient
+ */
 class JSONClient
 {
 
+	/**
+	 * Holds the root Guzzle client we work on top of.
+	 *
+	 * @var Client
+	 */
 	protected $client;
 
+	/**
+	 * Any global headers we care about.
+	 * In this case, we ALWAYS want a JSON response where possible.
+	 *
+	 * @var array
+	 */
 	protected $global_headers = [
 		'Accept' => 'application/json',
 	];
 
+	/**
+	 * The base timeout for requests.
+	 *
+	 * @var float
+	 */
 	protected $timeout = 10.0;
 
+	/**
+	 * JSONClient constructor.
+	 *
+	 * @param string $base_url
+	 * @param array  $headers
+	 */
 	public function __construct($base_url = '', array $headers = [])
 	{
 		$opts = [];
@@ -36,11 +63,31 @@ class JSONClient
 		$this->client = new Client($opts);
 	}
 
+	/**
+	 * Special method for GET because we never pass in a body.
+	 *
+	 * @param string $url
+	 * @param array  $query
+	 * @param array  $headers
+	 * @return Collections\Generic|\Illuminate\Support\Collection|void
+	 */
 	public function get($url, $query = [], $headers = [])
 	{
 		return $this->request('GET', $url, [], $query, $headers);
 	}
 
+	/**
+	 * The main meaty request method, handles
+	 * all outgoing requests and deals with responses.
+	 *
+	 * @param string $method
+	 * @param string $url
+	 * @param array  $body
+	 * @param array  $query
+	 * @param array  $headers
+	 * @return Collections\Generic|\Illuminate\Support\Collection|void
+	 * @throws JSONError
+	 */
 	private function request($method, $url, array $body = [], $query = [], $headers = [])
 	{
 		if (!empty($body)) {
@@ -66,6 +113,12 @@ class JSONClient
 		return CollectionManager::build(decode($response_body));
 	}
 
+	/**
+	 * Handles the error for us, just a bit of code abstraction.
+	 *
+	 * @param BadResponseException $exception
+	 * @throws JSONError
+	 */
 	public static function handleError(BadResponseException $exception)
 	{
 		$response_body = (string)$exception->getResponse()->getBody();
@@ -81,6 +134,14 @@ class JSONClient
 		throw new JSONError($message, $code, $array_body);
 	}
 
+	/**
+	 * Handles quick functions for all known HTTP verbs.
+	 *
+	 * @param $name
+	 * @param $arguments
+	 * @return Collections\Generic|\Illuminate\Support\Collection|void
+	 * @throws JSONLibraryException
+	 */
 	public function __call($name, $arguments)
 	{
 		$map = [

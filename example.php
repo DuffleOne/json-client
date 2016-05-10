@@ -11,7 +11,10 @@ try {
 
 	foreach($response as $user)
 	{
-		dd($user->company->name);
+		echo($user->name . '<br>');
+		echo($user['address']['geo']['lat'] . '<br>');
+		echo($user->company->name . '<br>');
+		echo("<br>");
 	}
 
 } catch (Exception $error) {

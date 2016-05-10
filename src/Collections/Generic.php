@@ -124,7 +124,23 @@ class Generic implements Countable, ArrayAccess
 		unset($this->attributes[$offset]);
 	}
 
+	/**
+	 * Return the value of this object as an object.
+	 *
+	 * @return string
+	 */
 	public function __toString() {
 		return encode($this->attributes);
+	}
+
+	/**
+	 * Build a new object from a JSON string rather than array.
+	 *
+	 * @param string $json
+	 * @return self
+	 */
+	public static function buildFromJson(string $json)
+	{
+		return new self(decode($json));
 	}
 }

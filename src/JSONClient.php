@@ -88,7 +88,7 @@ class JSONClient
 	 * @return Collections\Generic|\Illuminate\Support\Collection|void
 	 * @throws JSONError
 	 */
-	private function request($method, $url, array $body = [], $query = [], $headers = [])
+	private function request($method, $url, $body = [], $query = [], $headers = [])
 	{
 		if (!empty($body)) {
 			$body = encode($body);
@@ -129,6 +129,8 @@ class JSONClient
 		$message = null;
 		if (isset($array_body['message'])) {
 			$message = $array_body['message'];
+		} elseif($isset($array_body['code'])) {
+			$message = $array_body['code'];
 		}
 
 		throw new JSONError($message, $code, $array_body);

@@ -4,13 +4,16 @@ use Duffleman\JSONClient\JSONClient;
 
 require('vendor/autoload.php');
 
-$client = new JSONClient('http://localhost:3000/', [
-	'Authorization' => 'CuvvaInternal 01.test',
-]);
+$client = new JSONClient('http://jsonplaceholder.typicode.com/');
 
-$response = $client->post('1/stats', [
-	'start' => '2015-04-01',
-	'end'   => '2015-04-30',
-]);
+try {
+	$response = $client->get('users');
 
-dump($response);
+	foreach($response as $user)
+	{
+		dd($user->company->name);
+	}
+
+} catch (Exception $error) {
+	dump($error);
+}

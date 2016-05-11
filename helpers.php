@@ -3,7 +3,7 @@
 if (!function_exists('encode')) {
 	function encode(array $body)
 	{
-		$json = utf8_encode(json_encode($body, JSON_UNESCAPED_SLASHES));
+		$json = json_encode($body, JSON_UNESCAPED_SLASHES);
 
 		return $json;
 	}

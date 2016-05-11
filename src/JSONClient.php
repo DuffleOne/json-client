@@ -16,7 +16,7 @@ use GuzzleHttp\Exception\BadResponseException;
 class JSONClient
 {
 
-	protected static $version = '0.0.5';
+	protected static $version = '0.0.6';
 
 	/**
 	 * Holds the root Guzzle client we work on top of.
@@ -92,6 +92,8 @@ class JSONClient
 	 */
 	private function request($method, $url, $body = [], $query = [], $headers = [])
 	{
+		list($body, $query, $headers) = $this->setupVariables($body, $query, $headers);
+
 		if (!empty($body)) {
 			$body = encode($body);
 			$headers['Content-Type'] = 'application/json';
@@ -176,5 +178,28 @@ class JSONClient
 		}
 
 		return $this->request($method, $url, $body, $query, $headers);
+	}
+
+	/**
+	 * Setup empty arrays if null given.
+	 *
+	 * @param $body
+	 * @param $query
+	 * @param $headers
+	 * @return array
+	 */
+	private function setupVariables($body, $query, $headers)
+	{
+		if (is_null($headers)) {
+			$headers = [];
+		}
+		if (is_null($query)) {
+			$query = [];
+		}
+		if (is_null($body)) {
+			$body = [];
+		}
+
+		return [$body, $query, $headers];
 	}
 }

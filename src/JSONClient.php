@@ -16,6 +16,8 @@ use GuzzleHttp\Exception\BadResponseException;
 class JSONClient
 {
 
+	protected static $version = '0.0.5';
+
 	/**
 	 * Holds the root Guzzle client we work on top of.
 	 *
@@ -50,15 +52,13 @@ class JSONClient
 	{
 		$opts = [];
 		$opts['timeout'] = $this->timeout;
-		$opts['headers'] = [
-			'User-Agent' => \GuzzleHttp\default_user_agent() . ' json-client/0.1',
-		];
+
+		$this->global_headers['User-Agent'] = \GuzzleHttp\default_user_agent() . ' json-client/' . self::$version;
+		$this->global_headers = array_merge($this->global_headers, $headers);
 
 		if (!empty($base_url)) {
 			$opts['base_uri'] = $base_url;
 		}
-
-		$opts['headers'] = array_merge($this->global_headers, $opts['headers'], $headers);
 
 		$this->client = new Client($opts);
 	}
@@ -73,6 +73,8 @@ class JSONClient
 	 */
 	public function get($url, $query = [], $headers = [])
 	{
+		$headers = array_merge($this->global_headers, $headers);
+
 		return $this->request('GET', $url, [], $query, $headers);
 	}
 
@@ -98,6 +100,8 @@ class JSONClient
 		if (empty($body)) {
 			$body = null;
 		}
+
+		$headers = array_merge($this->global_headers, $headers);
 
 		try {
 			$response = $this->client->request($method, $url, [

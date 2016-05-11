@@ -16,7 +16,7 @@ use GuzzleHttp\Exception\BadResponseException;
 class JSONClient
 {
 
-	protected static $version = '0.0.6';
+	protected static $version = '0.0.7';
 
 	/**
 	 * Holds the root Guzzle client we work on top of.
@@ -97,9 +97,7 @@ class JSONClient
 		if (!empty($body)) {
 			$body = encode($body);
 			$headers['Content-Type'] = 'application/json';
-		}
-
-		if (empty($body)) {
+		} else {
 			$body = null;
 		}
 
@@ -113,10 +111,38 @@ class JSONClient
 			]);
 			$response_body = (string)$response->getBody();
 		} catch (BadResponseException $exception) {
-			return self::handleError($exception);
+			self::handleError($exception);
 		}
 
 		return CollectionManager::build(decode($response_body));
+	}
+
+	/**
+	 * Return a promise for async requests.
+	 *
+	 * @param string $method
+	 * @param string $url
+	 * @param array  $body
+	 * @param array  $query
+	 * @param array  $headers
+	 * @return \GuzzleHttp\Promise\PromiseInterface
+	 */
+	public function requestAsync($method, $url, $body = [], $query = [], $headers = [])
+	{
+		if (!empty($body)) {
+			$body = encode($body);
+			$headers['Content-Type'] = 'application/json';
+		} else {
+			$body = null;
+		}
+
+		$headers = array_merge($this->global_headers, $headers);
+
+		return $this->client->requestAsync($method, $url, [
+			'query'   => $query,
+			'body'    => $body,
+			'headers' => $headers,
+		]);
 	}
 
 	/**

@@ -129,7 +129,7 @@ class JSONClient
 		$message = null;
 		if (isset($array_body['message'])) {
 			$message = $array_body['message'];
-		} elseif($isset($array_body['code'])) {
+		} elseif(isset($array_body['code'])) {
 			$message = $array_body['code'];
 		}
 

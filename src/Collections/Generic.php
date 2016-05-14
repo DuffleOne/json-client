@@ -27,7 +27,7 @@ class Generic implements Countable, ArrayAccess
      *
      * @param array $attributes
      */
-    public function __construct(array $attributes)
+    public function __construct(array $attributes = [])
     {
         array_walk($attributes, function (&$item, $key) {
             if (is_array($item)) {

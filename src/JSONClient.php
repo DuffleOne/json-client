@@ -16,7 +16,7 @@ use GuzzleHttp\Exception\BadResponseException;
 class JSONClient
 {
 
-	protected static $version = '0.0.9';
+	protected static $version = '0.0.10';
 
 	/**
 	 * Holds the root Guzzle client we work on top of.

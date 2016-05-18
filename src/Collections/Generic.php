@@ -76,7 +76,15 @@ class Generic implements Countable, ArrayAccess
      */
     public function all()
     {
-        return $this->attributes;
+        $attributes = $this->attributes;
+
+        return array_map(function ($item) {
+            if (is_object($item) && get_class($item) === Generic::class) {
+                $item = $item->all();
+            }
+
+            return $item;
+        }, $attributes);
     }
 
     /**

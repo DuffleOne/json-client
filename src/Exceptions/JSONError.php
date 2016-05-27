@@ -36,12 +36,12 @@ class JSONError extends Exception
 	}
 
 	/**
-	 * Return the response as a Collection or Generic.
+	 * Return the response.
 	 *
-	 * @return Generic|Collection
+	 * @return array
 	 */
 	public function response()
 	{
-		return CollectionManager::build($this->body);
+		return $this->body;
 	}
 }

@@ -16,7 +16,7 @@ use GuzzleHttp\Exception\BadResponseException;
 class JSONClient
 {
 
-	protected static $version = '0.0.12';
+	protected static $version = '0.1.0';
 
 	/**
 	 * Holds the root Guzzle client we work on top of.
@@ -48,10 +48,10 @@ class JSONClient
 	 * @param string $base_url
 	 * @param array  $headers
 	 */
-	public function __construct($base_url = '', array $headers = [])
+	public function __construct($base_url = '', array $headers = [], $timeout = 10)
 	{
 		$opts = [];
-		$opts['timeout'] = $this->timeout;
+		$opts['timeout'] = $this->timeout = $timeout;
 
 		$this->global_headers['User-Agent'] = \GuzzleHttp\default_user_agent() . ' json-client/' . self::$version;
 		$this->global_headers = array_merge($this->global_headers, $headers);
@@ -87,10 +87,10 @@ class JSONClient
 	 * @param array  $body
 	 * @param array  $query
 	 * @param array  $headers
-	 * @return Collections\Generic|\Illuminate\Support\Collection|void
+	 * @return Collections\Generic|\Illuminate\Support\Collection|void|null
 	 * @throws JSONError
 	 */
-	private function request($method, $url, $body = [], $query = [], $headers = [])
+	public function request($method, $url, $body = [], $query = [], $headers = [])
 	{
 		list($body, $query, $headers) = $this->setupVariables($body, $query, $headers);
 
@@ -112,6 +112,10 @@ class JSONClient
 			$response_body = (string)$response->getBody();
 		} catch (BadResponseException $exception) {
 			self::handleError($exception);
+		}
+
+		if(empty($response_body)) {
+			return null;
 		}
 
 		return CollectionManager::build(decode($response_body));

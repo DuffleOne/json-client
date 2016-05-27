@@ -14,12 +14,15 @@
 			"Duffleman\\JSONClient\\": "src/"
 		},
 		"files": [
-			"helpers.php"
+			"src/helpers.php"
 		]
 	},
 	"require": {
 		"php": ">=7.0",
 		"guzzlehttp/guzzle": "6.*",
 		"illuminate/support": "5.*"
+	},
+	"require-dev": {
+		"symfony/var-dumper": "^3.0"
 	}
 }

@@ -43,6 +43,17 @@ class JSONClient
 	protected $timeout = 10.0;
 
 	/**
+	 * Should the response return as:
+	 * -1: Response() object from Guzzle.
+	 * 0: String
+	 * 1: Array
+	 * 2: Generic/Collection
+	 *
+	 * @var bool
+	 */
+	protected $mode = 2;
+
+	/**
 	 * JSONClient constructor.
 	 *
 	 * @param string $base_url
@@ -87,8 +98,9 @@ class JSONClient
 	 * @param array  $body
 	 * @param array  $query
 	 * @param array  $headers
-	 * @return Collections\Generic|\Illuminate\Support\Collection|void|null
+	 * @return Collections\Generic|\Illuminate\Support\Collection|null|void
 	 * @throws JSONError
+	 * @throws JSONLibraryException
 	 */
 	public function request($method, $url, $body = [], $query = [], $headers = [])
 	{
@@ -114,11 +126,27 @@ class JSONClient
 			self::handleError($exception);
 		}
 
-		if(empty($response_body)) {
+		if (empty($response_body)) {
 			return null;
 		}
 
-		return CollectionManager::build(decode($response_body));
+		switch ($this->mode) {
+			case -1:
+				return $response;
+				break;
+			case 0:
+				return $response_body;
+				break;
+			case 1:
+				return decode($response_body);
+				break;
+			case 2:
+				return CollectionManager::build(decode($response_body));
+				break;
+			default:
+				throw new JSONLibraryException('unknown_mode_set');
+				break;
+		}
 	}
 
 	/**
@@ -170,6 +198,24 @@ class JSONClient
 		}
 
 		throw new JSONError($message, $code, $array_body);
+	}
+
+	/**
+	 * Set the mode fluently.
+	 *
+	 * @param int $mode
+	 * @return $this
+	 * @throws JSONLibraryException
+	 */
+	public function mode($mode)
+	{
+		$acceptable_modes = [-1, 0, 1, 2];
+		if (!in_array($mode, $acceptable_modes)) {
+			throw new JSONLibraryException('bad_mode_set');
+		}
+		$this->mode = $mode;
+
+		return $this;
 	}
 
 	/**

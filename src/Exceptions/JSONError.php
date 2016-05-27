@@ -2,7 +2,6 @@
 
 namespace Duffleman\JSONClient\Exceptions;
 
-use Duffleman\JSONClient\Collections\CollectionManager;
 use Duffleman\JSONClient\Generic;
 use Exception;
 use Illuminate\Support\Collection;

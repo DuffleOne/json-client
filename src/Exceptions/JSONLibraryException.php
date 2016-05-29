@@ -5,11 +5,8 @@ namespace Duffleman\JSONClient\Exceptions;
 use Exception;
 
 /**
- * Class JSONLibraryException
- *
- * @package Duffleman\JSONClient\Exceptions
+ * Class JSONLibraryException.
  */
 class JSONLibraryException extends Exception
 {
-
 }

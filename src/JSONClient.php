@@ -126,26 +126,25 @@ class JSONClient
 			self::handleError($exception);
 		}
 
-		if (empty($response_body)) {
-			return null;
-		}
-
 		switch ($this->mode) {
 			case -1:
 				return $response;
-				break;
 			case 0:
 				return $response_body;
-				break;
 			case 1:
-				return decode($response_body);
-				break;
+				if(!empty($response_body)) {
+					return decode($response_body);
+				}
+
+				return null;
 			case 2:
-				return CollectionManager::build(decode($response_body));
-				break;
+				if(!empty($response_body)) {
+					return CollectionManager::build(decode($response_body));
+				}
+
+				return null;
 			default:
 				throw new JSONLibraryException('unknown_mode_set');
-				break;
 		}
 	}
 

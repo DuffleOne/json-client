@@ -23,7 +23,7 @@ class JSONError extends Exception
      * @param int    $code
      * @param array  $body
      */
-    public function __construct($message = '', $code = 0, array $body = [])
+    public function __construct($message = '', $code = 0, $body = [])
     {
         $this->body = $body;
         parent::__construct($message, $code, null);

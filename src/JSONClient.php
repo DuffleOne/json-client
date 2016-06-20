@@ -63,7 +63,7 @@ class JSONClient
         $opts = [];
         $opts['timeout'] = $this->timeout = $timeout;
 
-        $this->global_headers['User-Agent'] = \GuzzleHttp\default_user_agent() . ' json-client/' . self::$version;
+        $this->global_headers['User-Agent'] = \GuzzleHttp\default_user_agent().' json-client/'.self::$version;
         $this->global_headers = array_merge($this->global_headers, $headers);
 
         if (!empty($base_url)) {

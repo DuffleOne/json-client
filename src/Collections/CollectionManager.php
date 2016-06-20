@@ -2,6 +2,7 @@
 
 namespace Duffleman\JSONClient\Collections;
 
+use function Duffleman\JSONClient\has_string_keys;
 use Illuminate\Support\Collection;
 
 /**

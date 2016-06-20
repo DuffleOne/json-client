@@ -1,6 +1,6 @@
 {
 	"name": "duffleman/json-client",
-	"description": "JSON Client that extends Guzzle and allows for easy send an receive of json data.",
+	"description": "JSON Client that extends Guzzle and allows to easily send and receive json data.",
 	"license": "MIT",
 	"type": "library",
 	"authors": [

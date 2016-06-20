@@ -4,6 +4,7 @@ namespace Duffleman\JSONClient\Collections;
 
 use ArrayAccess;
 use Countable;
+use function Duffleman\JSONClient\has_string_keys;
 use Illuminate\Support\Collection;
 
 /**

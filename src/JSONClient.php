@@ -5,6 +5,8 @@ namespace Duffleman\JSONClient;
 use Duffleman\JSONClient\Collections\CollectionManager;
 use Duffleman\JSONClient\Exceptions\JSONError;
 use Duffleman\JSONClient\Exceptions\JSONLibraryException;
+use function Duffleman\JSONClient\decode;
+use function Duffleman\JSONClient\encode;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 
@@ -13,7 +15,7 @@ use GuzzleHttp\Exception\BadResponseException;
  */
 class JSONClient
 {
-    protected static $version = '0.1.1';
+    protected static $version = '1.0.0';
 
     /**
      * Holds the root Guzzle client we work on top of.
@@ -61,7 +63,7 @@ class JSONClient
         $opts = [];
         $opts['timeout'] = $this->timeout = $timeout;
 
-        $this->global_headers['User-Agent'] = \GuzzleHttp\default_user_agent().' json-client/'.self::$version;
+        $this->global_headers['User-Agent'] = \GuzzleHttp\default_user_agent() . ' json-client/' . self::$version;
         $this->global_headers = array_merge($this->global_headers, $headers);
 
         if (!empty($base_url)) {

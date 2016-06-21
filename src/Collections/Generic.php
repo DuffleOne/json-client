@@ -4,6 +4,8 @@ namespace Duffleman\JSONClient\Collections;
 
 use ArrayAccess;
 use Countable;
+use function Duffleman\JSONClient\decode;
+use function Duffleman\JSONClient\encode;
 use function Duffleman\JSONClient\has_string_keys;
 use Illuminate\Support\Collection;
 
@@ -139,7 +141,7 @@ class Generic implements Countable, ArrayAccess
      */
     public function __toString()
     {
-        return encode($this->attributes);
+        return encode($this->all());
     }
 
     /**

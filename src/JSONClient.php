@@ -15,7 +15,7 @@ use GuzzleHttp\Exception\BadResponseException;
  */
 class JSONClient
 {
-    protected static $version = '1.0.0';
+    protected static $version = '1.0.3';
 
     /**
      * Holds the root Guzzle client we work on top of.
@@ -195,7 +195,7 @@ class JSONClient
 
         $lookForKeys = ['message', 'code', 'error'];
 
-        for ($lookForKeys as $key) {
+        foreach ($lookForKeys as $key) {
             if (isset($array_body[$key])) {
                 $message = $array_body[$key];
             }

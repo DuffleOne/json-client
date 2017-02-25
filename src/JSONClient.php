@@ -193,11 +193,16 @@ class JSONClient
 
         $code = $exception->getResponse()->getStatusCode();
 
-        $message = null;
-        if (isset($array_body['message'])) {
-            $message = $array_body['message'];
-        } elseif (isset($array_body['code'])) {
-            $message = $array_body['code'];
+        $lookForKeys = ['message', 'code', 'error'];
+
+        for ($lookForKeys as $key) {
+            if (isset($array_body[$key])) {
+                $message = $array_body[$key];
+            }
+        }
+
+        if (!$message) {
+            $message = 'unknown_error';
         }
 
         throw new JSONError($message, $code, $array_body);
